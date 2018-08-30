@@ -91,6 +91,8 @@ func equalsWithDelta(t *testing.T, expected, actual, delta float64, debugMsg str
 			diff := math.Abs(expected - actual)
 			require.True(t, delta > diff, debugMsg)
 			require.Equal(t, v, actual[i], debugMsg)
+			require.InDelta(t, v, actual[i], 0.0001, debugMsg)
+			// require.Equal(t, v, actual[i], debugMsg)
 		}
 	}
 }
