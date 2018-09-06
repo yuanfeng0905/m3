@@ -87,14 +87,20 @@ func genRegexpQuery(docs []doc.Document) gopter.Gen {
 }
 
 func genNegationQuery(docs []doc.Document) gopter.Gen {
-	return gen.OneGenOf(genTermQuery(docs), genRegexpQuery(docs)).
+	return gen.OneGenOf(
+		genTermQuery(docs),
+		//  genRegexpQuery(docs),
+	).
 		Map(func(q search.Query) search.Query {
 			return query.NewNegationQuery(q)
 		})
 }
 
 func genConjuctionQuery(docs []doc.Document) gopter.Gen {
-	return gen.OneGenOf(genTermQuery(docs), genRegexpQuery(docs), genNegationQuery(docs)).
+	return gen.OneGenOf(
+		genTermQuery(docs),
+		//  genRegexpQuery(docs),
+		genNegationQuery(docs)).
 		Map(func(qs search.Query) search.Query {
 			return query.NewConjunctionQuery([]search.Query{qs})
 		})
@@ -105,7 +111,11 @@ func genConjuctionQuery(docs []doc.Document) gopter.Gen {
 }
 
 func genDisjunctionQuery(docs []doc.Document) gopter.Gen {
-	return gen.OneGenOf(genTermQuery(docs), genRegexpQuery(docs), genNegationQuery(docs)).
+	return gen.OneGenOf(
+		genTermQuery(docs),
+		//  genRegexpQuery(docs),
+		genNegationQuery(docs),
+	).
 		Map(func(qs search.Query) search.Query {
 			return query.NewDisjunctionQuery([]search.Query{qs})
 		})
@@ -118,9 +128,8 @@ func genDisjunctionQuery(docs []doc.Document) gopter.Gen {
 func genQuery(docs []doc.Document) gopter.Gen {
 	return gen.OneGenOf(
 		genTermQuery(docs),
-		genRegexpQuery(docs),
+		// genRegexpQuery(docs),
 		genNegationQuery(docs),
-		genConjuctionQuery(docs))
-	// ,
-	// genDisjunctionQuery(docs))
+		genConjuctionQuery(docs),
+		genDisjunctionQuery(docs))
 }

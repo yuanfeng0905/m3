@@ -26,6 +26,7 @@ import (
 	"math/rand"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/m3db/m3/src/m3ninx/index"
 	"github.com/m3db/m3/src/m3ninx/search"
@@ -43,7 +44,8 @@ var (
 
 func TestSegmentDistributionDoesNotAffectQuery(t *testing.T) {
 	parameters := gopter.DefaultTestParameters()
-	seed := int64(1536191650041169837) // time.Now().UnixNano()
+	// seed := int64(1536191650041169837) // time.Now().UnixNano()
+	seed := time.Now().UnixNano()
 	parameters.MinSuccessfulTests = 100
 	parameters.MaxSize = 20
 	parameters.Rng = rand.New(rand.NewSource(seed))
